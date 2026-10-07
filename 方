@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>護理一甲 Nursing 1A - 班級專屬網頁</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nursing: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            teal: '#14b8a6',
+                            rose: '#f43f5e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-nursing-200 selection:text-nursing-900">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo & Name -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-nursing-600 to-nursing-400 flex items-center justify-center text-white shadow-md shadow-nursing-500/20">
+                        <i class="fa-solid font-bold fa-user-nurse text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-nursing-800 via-nursing-600 to-nursing-500 bg-clip-text text-transparent">護理一甲</span>
+                        <span class="block text-xs text-slate-400 font-medium tracking-wider uppercase">Nursing 1A Class Portal</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center gap-1">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-nursing-600 bg-nursing-50">
+                        <i class="fa-solid fa-house"></i> 首頁
+                    </button>
+                    <button onclick="switchTab('toolbox')" id="nav-toolbox" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-slate-600 hover:text-nursing-600 hover:bg-slate-50">
+                        <i class="fa-solid fa-toolbox"></i> 護理工具箱
+                    </button>
+                    <button onclick="switchTab('timetable')" id="nav-timetable" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-slate-600 hover:text-nursing-600 hover:bg-slate-50">
+                        <i class="fa-solid fa-calendar-days"></i> 班級課表
+                    </button>
+                    <button onclick="switchTab('calendar')" id="nav-calendar" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-slate-600 hover:text-nursing-600 hover:bg-slate-50">
+                        <i class="fa-solid fa-calendar-check"></i> 行事曆與待辦
+                    </button>
+                    <button onclick="switchTab('members')" id="nav-members" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 text-slate-600 hover:text-nursing-600 hover:bg-slate-50">
+                        <i class="fa-solid fa-users"></i> 班級成員
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg">
+            <button onclick="switchTab('home'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-3 py-2.5 rounded-lg text-base font-medium flex items-center gap-3 text-nursing-600 bg-nursing-50">
+                <i class="fa-solid fa-house w-5 text-center"></i> 首頁
+            </button>
+            <button onclick="switchTab('toolbox'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-3 py-2.5 rounded-lg text-base font-medium flex items-center gap-3 text-slate-700 hover:bg-slate-50">
+                <i class="fa-solid fa-toolbox w-5 text-center"></i> 護理工具箱
+            </button>
+            <button onclick="switchTab('timetable'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-3 py-2.5 rounded-lg text-base font-medium flex items-center gap-3 text-slate-700 hover:bg-slate-50">
+                <i class="fa-solid fa-calendar-days w-5 text-center"></i> 班級課表
+            </button>
+            <button onclick="switchTab('calendar'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-3 py-2.5 rounded-lg text-base font-medium flex items-center gap-3 text-slate-700 hover:bg-slate-50">
+                <i class="fa-solid fa-calendar-check w-5 text-center"></i> 行事曆與待辦
+            </button>
+            <button onclick="switchTab('members'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-3 py-2.5 rounded-lg text-base font-medium flex items-center gap-3 text-slate-700 hover:bg-slate-50">
+                <i class="fa-solid fa-users w-5 text-center"></i> 班級成員
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ==================== TAB 1: 班級首頁 ==================== -->
+        <section id="tab-home" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-nursing-800 via-nursing-700 to-nursing-600 text-white p-8 md:p-12 shadow-xl">
+                <div class="relative z-10 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-nursing-100 text-xs font-semibold mb-4 border border-white/20">
+                        <i class="fa-solid fa-heart-pulse text-nursing-300"></i> 關懷 • 專業 • 卓越
+                    </div>
+                    <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+                        用專業守護生命<br><span class="text-nursing-200">護理一甲 溫馨啟航</span>
+                    </h1>
+                    <p class="text-nursing-100 text-base md:text-lg mb-8 leading-relaxed">
+                        歡迎來到護理一甲專屬班級園地！這裡是我們共享學習資源、課表查詢、護理臨床計算工具以及班級動態的數位中心。
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="switchTab('toolbox')" class="px-6 py-3 rounded-xl bg-white text-nursing-800 font-semibold hover:bg-nursing-50 transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-calculator text-nursing-600"></i> 開啟護理工具
+                        </button>
+                        <button onclick="switchTab('timetable')" class="px-6 py-3 rounded-xl bg-nursing-500/30 backdrop-blur-md text-white font-semibold border border-white/30 hover:bg-nursing-500/40 transition-all duration-200 flex items-center gap-2">
+                            <i class="fa-solid fa-clock"></i> 查看今日課表
+                        </button>
+                    </div>
+                </div>
+                <!-- Background Graphic Overlay -->
+                <div class="absolute -right-12 -bottom-12 opacity-15 pointer-events-none text-white">
+                    <i class="fa-solid fa-stethoscope text-[260px]"></i>
+                </div>
+            </div>
+
+            <!-- Quick Stats & Info Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 font-medium">總學生人數</div>
+                        <div class="text-xl font-bold text-slate-800">45 名</div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-book-medical"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 font-medium">本學期核心必修</div>
+                        <div class="text-xl font-bold text-slate-800">4 門</div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 font-medium">班級導師</div>
+                        <div class="text-xl font-bold text-slate-800">林雅婷 博士</div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-hospital-user"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 font-medium">實習倒數</div>
+                        <div class="text-xl font-bold text-slate-800">大二上學期</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Announcements & Today Overview Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Latest Announcements (2 cols) -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-bullhorn text-nursing-600"></i> 最新班級公告
+                        </h2>
+                        <span class="text-xs text-slate-400">實時更新</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <!-- Announcement 1 -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:border-nursing-300 transition-all duration-200">
+                            <div class="flex items-start justify-between gap-4 mb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-700">重要考核</span>
+                                    <h3 class="font-bold text-slate-800">解剖學實驗第一次跑考通知</h3>
+                                </div>
+                                <span class="text-xs text-slate-400 whitespace-nowrap">2026-10-12</span>
+                            </div>
+                            <p class="text-sm text-slate-600 mb-3">
+                                下週五（10/24）解剖學實驗課程將進行骨骼系統跑考，請各位同學務必於本週至解剖實驗室完成自主複習登記，實習衣與跑考用筆請準備齊全。
+                            </p>
+                            <div class="flex items-center gap-2 text-xs text-slate-500">
+                                <i class="fa-solid fa-user-tag text-slate-400"></i> 發佈人：解剖學小幫手（學藝股長）
+                            </div>
+                        </div>
+
+                        <!-- Announcement 2 -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:border-nursing-300 transition-all duration-200">
+                            <div class="flex items-start justify-between gap-4 mb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-nursing-100 text-nursing-800">班務通知</span>
+                                    <h3 class="font-bold text-slate-800">護理實習服套量與訂購確認</h3>
+                                </div>
+                                <span class="text-xs text-slate-400 whitespace-nowrap">2026-10-08</span>
+                            </div>
+                            <p class="text-sm text-slate-600 mb-3">
+                                護理系實習服套量試穿將於本週三中午 12:20 在 302 護理示範教室進行，請尚未登記尺寸的同學準時到場試穿，以利後續繡名字與製作。
+                            </p>
+                            <div class="flex items-center gap-2 text-xs text-slate-500">
+                                <i class="fa-solid fa-user-tag text-slate-400"></i> 發佈人：班長 怡君
+                            </div>
+                        </div>
+
+                        <!-- Announcement 3 -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:border-nursing-300 transition-all duration-200">
+                            <div class="flex items-start justify-between gap-4 mb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">學術活動</span>
+                                    <h3 class="font-bold text-slate-800">台大醫院護理專家講座：邁向護理專業第一步</h3>
+                                </div>
+                                <span class="text-xs text-slate-400 whitespace-nowrap">2026-10-05</span>
+                            </div>
+                            <p class="text-sm text-slate-600 mb-3">
+                                護理學導論特別邀請加護病房資深護理長帶來臨床經驗分享，時間為本週四第三、四節，地點於醫學大樓 101 演講廳。
+                            </p>
+                            <div class="flex items-center gap-2 text-xs text-slate-500">
+                                <i class="fa-solid fa-user-tag text-slate-400"></i> 發佈人：班導師 林雅婷
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fast Tool Shortcuts & Today's Schedule Card (1 col) -->
+                <div class="space-y-6">
+                    <!-- Quick Tool Entrance -->
+                    <div class="bg-gradient-to-br from-nursing-50 to-teal-50 p-6 rounded-2xl border border-nursing-100 shadow-sm">
+                        <h3 class="text-lg font-bold text-nursing-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-nursing-600"></i> 常用護理工具速查
+                        </h3>
+                        <p class="text-xs text-slate-600 mb-4">點擊下方按鈕快速進行臨床與護理學習計算</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="switchTab('toolbox'); setToolboxActive('gcs')" class="p-3 bg-white hover:bg-nursing-500 hover:text-white text-slate-700 rounded-xl border border-slate-200/80 shadow-sm transition-all duration-200 text-left flex flex-col gap-2 group">
+                                <i class="fa-solid fa-brain text-nursing-500 group-hover:text-white text-xl"></i>
+                                <span class="text-xs font-bold">GCS 昏迷評估</span>
+                            </button>
+                            <button onclick="switchTab('toolbox'); setToolboxActive('iv')" class="p-3 bg-white hover:bg-nursing-500 hover:text-white text-slate-700 rounded-xl border border-slate-200/80 shadow-sm transition-all duration-200 text-left flex flex-col gap-2 group">
+                                <i class="fa-solid fa-faucet-drip text-nursing-500 group-hover:text-white text-xl"></i>
+                                <span class="text-xs font-bold">IV 滴數流速計算</span>
+                            </button>
+                            <button onclick="switchTab('toolbox'); setToolboxActive('bmi')" class="p-3 bg-white hover:bg-nursing-500 hover:text-white text-slate-700 rounded-xl border border-slate-200/80 shadow-sm transition-all duration-200 text-left flex flex-col gap-2 group">
+                                <i class="fa-solid fa-weight-scale text-nursing-500 group-hover:text-white text-xl"></i>
+                                <span class="text-xs font-bold">BMI & BSA 計算</span>
+                            </button>
+                            <button onclick="switchTab('toolbox'); setToolboxActive('edd')" class="p-3 bg-white hover:bg-nursing-500 hover:text-white text-slate-700 rounded-xl border border-slate-200/80 shadow-sm transition-all duration-200 text-left flex flex-col gap-2 group">
+                                <i class="fa-solid fa-baby text-nursing-500 group-hover:text-white text-xl"></i>
+                                <span class="text-xs font-bold">預產期計算</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Today's Schedule Quick View -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-calendar-day text-nursing-600"></i> 今日課表概覽
+                            </h3>
+                            <span id="home-today-weekday" class="text-xs font-bold px-2.5 py-1 bg-nursing-100 text-nursing-800 rounded-lg">星期三</span>
+                        </div>
+                        <div id="home-today-courses-list" class="space-y-3">
+                            <!-- Dynamic content populated by JS -->
+                        </div>
+                        <button onclick="switchTab('timetable')" class="w-full mt-4 py-2.5 text-xs font-semibold text-nursing-600 bg-nursing-50 hover:bg-nursing-100 rounded-xl transition-all duration-200 text-center block">
+                            查看完整一週課表 <i class="fa-solid fa-arrow-right text-xs ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: 護理工具箱 ==================== -->
+        <section id="tab-toolbox" class="tab-content hidden space-y-8">
+            <div class="border-b border-slate-200 pb-4">
+                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 flex items-center gap-3">
+                    <i class="fa-solid fa-toolbox text-nursing-600"></i> 護理臨床實用工具箱
+                </h1>
+                <p class="text-slate-500 text-sm mt-1">集結基礎護理學與臨床實務常用之計算器與評估量表，方便課業學習與試算。</p>
+            </div>
+
+            <!-- Sub-tabs for Tools -->
+            <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+                <button onclick="setToolboxActive('bmi')" id="tool-tab-bmi" class="tool-subtab px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-nursing-600 text-white shadow-sm">
+                    <i class="fa-solid fa-weight-scale mr-1.5"></i> BMI & BSA 體表面積
+                </button>
+                <button onclick="setToolboxActive('iv')" id="tool-tab-iv" class="tool-subtab px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-white text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-faucet-drip mr-1.5"></i> IV 點滴滴數流速
+                </button>
+                <button onclick="setToolboxActive('edd')" id="tool-tab-edd" class="tool-subtab px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-white text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-baby mr-1.5"></i> 預產期計算 (Naegele)
+                </button>
+                <button onclick="setToolboxActive('gcs')" id="tool-tab-gcs" class="tool-subtab px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-white text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-brain mr-1.5"></i> GCS 昏迷指數評估
+                </button>
+            </div>
+
+            <!-- Tool Container -->
+            <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200/80 shadow-md">
+                
+                <!-- TOOL 1: BMI & BSA Calculator -->
+                <div id="tool-panel-bmi" class="tool-panel space-y-6">
+                    <div class="max-w-xl">
+                        <h3 class="text-xl font-bold text-slate-800 mb-1">BMI & Body Surface Area (BSA) 計算器</h3>
+                        <p class="text-xs text-slate-500">使用 Mosteller 公式計算體表面積：$\text{BSA (m}^2\text{)} = \sqrt{\frac{\text{身高(cm)} \times \text{體重(kg)}}{3600}}$</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">身高 (cm)</label>
+                                <input type="number" id="bmi-height" placeholder="例如：165" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-nursing-500 focus:border-nursing-500 outline-none text-slate-800">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">體重 (kg)</label>
+                                <input type="number" id="bmi-weight" placeholder="例如：58" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-nursing-500 focus:border-nursing-500 outline-none text-slate-800">
+                            </div>
+                            <button onclick="calculateBMI()" class="w-full py-3 bg-nursing-600 hover:bg-nursing-700 text-white font-bold rounded-xl shadow-md transition-all duration-200 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> 開始計算
+                            </button>
+                        </div>
+
+                        <!-- Result Display Box -->
+                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">計算結果分析</h4>
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                                        <span class="text-xs text-slate-400">BMI 指數</span>
+                                        <div id="res-bmi" class="text-2xl font-black text-nursing-700">--</div>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                                        <span class="text-xs text-slate-400">BSA 體表面積</span>
+                                        <div id="res-bsa" class="text-2xl font-black text-teal-600">-- <span class="text-xs font-normal">m²</span></div>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="text-xs font-semibold text-slate-600">體務狀態分級：</div>
+                                    <div id="res-bmi-status" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-600">
+                                        請輸入數值後點擊計算
+                                    </div>
+                                    <p id="res-bmi-advice" class="text-xs text-slate-500 leading-relaxed mt-2">
+                                        衛教建議將會顯示於此處。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOOL 2: IV Drip Rate Calculator -->
+                <div id="tool-panel-iv" class="tool-panel hidden space-y-6">
+                    <div class="max-w-xl">
+                        <h3 class="text-xl font-bold text-slate-800 mb-1">IV 靜脈點滴流速與滴數計算器</h3>
+                        <p class="text-xs text-slate-500">計算公式：$\text{gtt/min} = \frac{\text{總體積(mL)} \times \text{滴數因子(gtt/mL)}}{\text{給藥時間(分)}}$</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">輸液總量 (mL)</label>
+                                <input type="number" id="iv-volume" placeholder="例如：500" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-nursing-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">預計輸注時間 (小時 hr)</label>
+                                <input type="number" id="iv-hours" step="0.5" placeholder="例如：8" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-nursing-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">點滴套管滴數因子 (Drop Factor)</label>
+                                <select id="iv-factor" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-nursing-500 outline-none bg-white">
+                                    <option value="20">20 gtt/mL (一般成人生理食鹽水/輸液套)</option>
+                                    <option value="15">15 gtt/mL (傳統輸液套)</option>
+                                    <option value="10">10 gtt/mL (輸血套管/粗滴管)</option>
+                                    <option value="60">60 gtt/mL (兒科/微量點滴 Microdrip)</option>
+                                </select>
+                            </div>
+                            <button onclick="calculateIV()" class="w-full py-3 bg-nursing-600 hover:bg-nursing-700 text-white font-bold rounded-xl shadow-md transition-all duration-200 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> 計算流速
+                            </button>
+                        </div>
+
+                        <!-- Result Box -->
+                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">點滴設定建議</h4>
+                                <div class="space-y-4">
+                                    <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                                        <span class="text-xs text-slate-400">每分鐘滴數 (Drop Rate)</span>
+                                        <div id="res-iv-gtt" class="text-3xl font-black text-nursing-700">-- <span class="text-sm font-bold">gtt/min</span></div>
+                                        <span id="res-iv-sec" class="text-xs text-slate-500 block mt-1">（約每 -- 秒 1 滴）</span>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                                        <span class="text-xs text-slate-400">幫浦每小時流速 (Pump Rate)</span>
+                                        <div id="res-iv-mlhr" class="text-2xl font-bold text-slate-800">-- <span class="text-xs font-normal">mL/hr</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOOL 3: Expected Date of Delivery Calculator -->
+                <div id="tool-panel-edd" class="tool-panel hidden space-y-6">
+                    <div class="max-w-xl">
+                        <h3 class="text-xl font-bold text-slate-800 mb-1">預產期計算器 (Naegele's Rule)</h3>
+                        <p class="text-xs text-slate-500">依據奈格氏法則：最後一次月經 (LMP) 月份 -3 (或 +9)，日期 +7。</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">最後一次月經第一天 (LMP)</label>
+                                <input type="date" id="edd-lmp" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-nursing-500 outline-none">
+                            </div>
+                            <button onclick="calculateEDD()" class="w-full py-3 bg-nursing-600 hover:bg-nursing-700 text-white font-bold rounded-xl shadow-md transition-all duration-200 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-baby"></i> 推算預產期
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">預估結果</h4>
+                                <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm text-center mb-4">
+                                    <span class="text-xs text-slate-400 block mb-1">預估預產期 (EDD)</span>
+                                    <div id="res-edd-date" class="text-2xl font-black text-rose-600">請選擇日期</div>
+                                </div>
+                                <div class="text-xs text-slate-500 space-y-1">
+                                    <p>• 備註：此計算預設月經週期為 28 天。</p>
+                                    <p>• 臨床上仍需配合超音波 (CRL/BPD) 進行精確校正。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOOL 4: GCS Calculator -->
+                <div id="tool-panel-gcs" class="tool-panel hidden space-y-6">
+                    <div class="max-w-xl">
+                        <h3 class="text-xl font-bold text-slate-800 mb-1">格拉斯哥昏迷指數 (GCS) 評估表</h3>
+                        <p class="text-xs text-slate-500">評估睜眼反應 (E)、語言反應 (V) 與運動反應 (M)，最高 15 分，最低 3 分。</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- E: Eye Opening -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-nursing-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-eye text-nursing-600"></i> E - 睜眼反應 (Eye)
+                            </h4>
+                            <select id="gcs-e" onchange="calculateGCS()" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-nursing-500">
+                                <option value="4">4分 - 自動睜眼 (Spontaneous)</option>
+                                <option value="3">3分 - 聽到聲音睜眼 (To speech)</option>
+                                <option value="2">2分 - 感到疼痛睜眼 (To pain)</option>
+                                <option value="1">1分 - 無反應 (None)</option>
+                            </select>
+                        </div>
+
+                        <!-- V: Verbal Response -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-nursing-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-comments text-nursing-600"></i> V - 語言反應 (Verbal)
+                            </h4>
+                            <select id="gcs-v" onchange="calculateGCS()" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-nursing-500">
+                                <option value="5">5分 - 切題/定向力正常 (Oriented)</option>
+                                <option value="4">4分 - 答非所問/語無倫次 (Confused)</option>
+                                <option value="3">3分 - 單字不連貫/不切題 (Inappropriate)</option>
+                                <option value="2">2分 - 發出無意義發音 (Incomprehensible)</option>
+                                <option value="1">1分 - 無發音 (None)</option>
+                                <option value="1-intubated">E-T/Vt - 插管無法發音</option>
+                            </select>
+                        </div>
+
+                        <!-- M: Motor Response -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-nursing-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-hand text-nursing-600"></i> M - 運動反應 (Motor)
+                            </h4>
+                            <select id="gcs-m" onchange="calculateGCS()" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-nursing-500">
+                                <option value="6">6分 - 遵從指令 (Obeys commands)</option>
+                                <option value="5">5分 - 疼痛定位 (Localizes pain)</option>
+                                <option value="4">4分 - 疼痛回縮/逃避 (Withdrawal)</option>
+                                <option value="3">3分 - 屈曲反應/去大腦皮質姿態 (Flexion)</option>
+                                <option value="2">2分 - 伸展反應/去大腦姿態 (Extension)</option>
+                                <option value="1">1分 - 無反應 (None)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- GCS Total & Interpretation -->
+                    <div class="bg-nursing-50 p-6 rounded-2xl border border-nursing-200 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-2xl bg-nursing-600 text-white font-black text-2xl flex items-center justify-center shadow-md shadow-nursing-500/30">
+                                <span id="res-gcs-score">E4V5M6</span>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-500 font-semibold">GCS 總分：<span id="res-gcs-num" class="text-lg font-bold text-nursing-900">15</span> / 15 分</div>
+                                <div id="res-gcs-level" class="text-base font-extrabold text-emerald-600 mt-0.5">意識清醒 (Normal Consciousness)</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-slate-600 max-w-md text-right md:text-right text-center">
+                            <span class="font-bold text-slate-700 block mb-1">評估指標參考：</span>
+                            13-15分：輕度腦損傷 / 8-12分：中度腦損傷 / 3-7分：重度腦損傷（嚴重昏迷）
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: 班級課表 ==================== -->
+        <section id="tab-timetable" class="tab-content hidden space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-calendar-days text-nursing-600"></i> 護理一甲 大一上學期課表
+                    </h1>
+                    <p class="text-slate-500 text-sm mt-1">即時檢視各節次課程、授課教室與指導教授資訊。</p>
+                </div>
+                
+                <!-- Search & Filters -->
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="timetable-search" oninput="filterTimetable()" placeholder="搜尋課程或教授..." class="pl-10 pr-4 py-2 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-nursing-500 outline-none w-48 sm:w-64 bg-white">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timetable Interactive Table -->
+            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-md overflow-hidden">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="bg-slate-100/80 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
+                                <th class="p-4 w-28 text-center font-bold">節次 / 時間</th>
+                                <th class="p-4 font-bold text-center w-1/5" id="th-mon">星期一</th>
+                                <th class="p-4 font-bold text-center w-1/5" id="th-tue">星期二</th>
+                                <th class="p-4 font-bold text-center w-1/5" id="th-wed">星期三</th>
+                                <th class="p-4 font-bold text-center w-1/5" id="th-thu">星期四</th>
+                                <th class="p-4 font-bold text-center w-1/5" id="th-fri">星期五</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timetable-body" class="divide-y divide-slate-200/60 text-sm">
+                            <!-- Dynamic rendering via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Course Legend -->
+            <div class="flex flex-wrap items-center gap-4 text-xs text-slate-600 bg-slate-100 p-4 rounded-2xl">
+                <span class="font-bold text-slate-700">圖例說明：</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-nursing-500 inline-block"></span> 護理專業核心</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-teal-500 inline-block"></span> 醫學基礎實驗</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span> 通識與共同必修</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span> 班務與導師時間</span>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: 行事曆與待辦 ==================== -->
+        <section id="tab-calendar" class="tab-content hidden space-y-8">
+            <div class="border-b border-slate-200 pb-4">
+                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 flex items-center gap-3">
+                    <i class="fa-solid fa-calendar-check text-nursing-600"></i> 班級行事曆與個人待辦
+                </h1>
+                <p class="text-slate-500 text-sm mt-1">追蹤跑考日程、期中考與班級重要活動事項。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Academic Calendar Events List (2 cols) -->
+                <div class="lg:col-span-2 space-y-4">
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-flag text-nursing-600"></i> 本學期護理系重要日程
+                    </h3>
+                    <div id="calendar-events-container" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Interactive Personal To-Do Widget (1 col) -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-nursing-600"></i> 我的護理學習待辦
+                    </h3>
+                    <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-md space-y-4">
+                        <div class="flex gap-2">
+                            <input type="text" id="todo-input" placeholder="新增待辦事項 (如：預習解剖神經系統)..." class="flex-1 px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-nursing-500 outline-none">
+                            <button onclick="addTodo()" class="px-3 py-2 bg-nursing-600 hover:bg-nursing-700 text-white font-bold rounded-xl text-xs transition-all duration-200">
+                                新增
+                            </button>
+                        </div>
+
+                        <ul id="todo-list" class="space-y-2 max-h-[350px] overflow-y-auto custom-scrollbar">
+                            <!-- Dynamic todos -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: 班級成員 ==================== -->
+        <section id="tab-members" class="tab-content hidden space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-users text-nursing-600"></i> 護理一甲 師長與成員介紹
+                    </h1>
+                    <p class="text-slate-500 text-sm mt-1">認識我們的班導師、班級幹部與親切的同學們。</p>
+                </div>
+                <!-- Member Search -->
+                <div>
+                    <input type="text" id="member-search" oninput="filterMembers()" placeholder="搜尋姓名或幹部職稱..." class="px-4 py-2 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-nursing-500 outline-none bg-white w-full sm:w-64">
+                </div>
+            </div>
+
+            <!-- Mentor Spotlight Card -->
+            <div class="bg-gradient-to-r from-teal-500 to-nursing-600 text-white p-6 md:p-8 rounded-3xl shadow-lg flex flex-col md:flex-row items-center gap-6">
+                <img src="https://images.unsplash.com/photo-1594824813566-88855ce7890f?auto=format&fit=crop&q=80&w=250" alt="班導師" class="w-28 h-28 rounded-full border-4 border-white/30 object-cover shadow-md">
+                <div class="space-y-2 text-center md:text-left">
+                    <div class="inline-block px-3 py-0.5 rounded-full bg-white/20 text-xs font-semibold">班級導師 (Class Advisor)</div>
+                    <h2 class="text-2xl font-bold">林雅婷 博士 / 副教授</h2>
+                    <p class="text-xs text-nursing-100 max-w-xl leading-relaxed">
+                        「護理不只是一門科學，更是一門關懷的藝術。願大家在護理一甲的日子裡，收穫滿滿的專業知識與溫暖的同儕情誼！」
+                    </p>
+                    <div class="text-xs text-nursing-200 pt-1 flex flex-wrap justify-center md:justify-start gap-4">
+                        <span><i class="fa-solid fa-envelope mr-1"></i> ytlin@nursing.edu.tw</span>
+                        <span><i class="fa-solid fa-building mr-1"></i> 護理館 402 研究室</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Officers & Classmates Grid -->
+            <div>
+                <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-id-card text-nursing-600"></i> 班級成員名冊
+                </h3>
+                <div id="members-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-1">
+            <p>© 2026 護理一甲 (Nursing 1A) 班級專屬網頁. All rights reserved.</p>
+            <p class="text-slate-400">用愛與專業陪伴每一刻 • Designed with Nursing Care</p>
+        </div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        // DATA SOURCES
+        const timetableData = [
+            { period: "1", time: "08:10 - 09:00", mon: { name: "解剖學", room: "201教室", teacher: "陳教授", type: "core" }, tue: { name: "大一體育", room: "體育館", teacher: "黃教練", type: "gen" }, wed: { name: "通識人文", room: "105教室", teacher: "張教授", type: "gen" }, thu: { name: "護理學導論", room: "301教室", teacher: "林導師", type: "core" }, fri: { name: "解剖學實驗", room: "解剖實驗室", teacher: "陳教授", type: "lab" } },
+            { period: "2", time: "09:10 - 10:00", mon: { name: "解剖學", room: "201教室", teacher: "陳教授", type: "core" }, tue: { name: "大一體育", room: "體育館", teacher: "黃教練", type: "gen" }, wed: { name: "通識人文", room: "105教室", teacher: "張教授", type: "gen" }, thu: { name: "護理學導論", room: "301教室", teacher: "林導師", type: "core" }, fri: { name: "解剖學實驗", room: "解剖實驗室", teacher: "陳教授", type: "lab" } },
+            { period: "3", time: "10:20 - 11:10", mon: { name: "生理學", room: "202教室", teacher: "李教授", type: "core" }, tue: { name: "大一英文", room: "402教室", teacher: "John W.", type: "gen" }, wed: { name: "護理專業倫理", room: "301教室", teacher: "王副教授", type: "core" }, thu: { name: "人類發展學", room: "201教室", teacher: "吳博士", type: "core" }, fri: { name: "普通化學", room: "化學館", teacher: "劉教授", type: "gen" } },
+            { period: "4", time: "11:20 - 12:10", mon: { name: "生理學", room: "202教室", teacher: "李教授", type: "core" }, tue: { name: "大一英文", room: "402教室", teacher: "John W.", type: "gen" }, wed: { name: "護理專業倫理", room: "301教室", teacher: "王副教授", type: "core" }, thu: { name: "人類發展學", room: "201教室", teacher: "吳博士", type: "core" }, fri: { name: "普通化學", room: "化學館", teacher: "劉教授", type: "gen" } },
+            { period: "午休", time: "12:10 - 13:30", isRest: true },
+            { period: "5", time: "13:30 - 14:20", mon: { name: "基本護理學", room: "302示範教室", teacher: "蔡講師", type: "core" }, tue: { name: "國文與思維", room: "102教室", teacher: "鄭教授", type: "gen" }, wed: { name: "生理學實驗", room: "生理實驗室", teacher: "李教授", type: "lab" }, thu: { name: "大一國文", room: "102教室", teacher: "鄭教授", type: "gen" }, fri: { name: "通識社會", room: "108教室", teacher: "周教授", type: "gen" } },
+            { period: "6", time: "14:30 - 15:20", mon: { name: "基本護理學", room: "302示範教室", teacher: "蔡講師", type: "core" }, tue: { name: "國文與思維", room: "102教室", teacher: "鄭教授", type: "gen" }, wed: { name: "生理學實驗", room: "生理實驗室", teacher: "李教授", type: "lab" }, thu: { name: "大一國文", room: "102教室", teacher: "鄭教授", type: "gen" }, fri: { name: "通識社會", room: "108教室", teacher: "周教授", type: "gen" } },
+            { period: "7", time: "15:40 - 16:30", mon: { name: "心理學", room: "205教室", teacher: "趙博士", type: "gen" }, tue: { name: "班會 / 導師時間", room: "301教室", teacher: "林導師", type: "class" }, wed: { name: "生理學實驗", room: "生理實驗室", teacher: "李教授", type: "lab" }, thu: { name: "資訊科技概論", room: "電腦教室A", teacher: "許教授", type: "gen" }, fri: { name: "自主學習", room: "—", teacher: "—", type: "free" } },
+            { period: "8", time: "16:40 - 17:30", mon: { name: "心理學", room: "205教室", teacher: "趙博士", type: "gen" }, tue: { name: "自主學習", room: "—", teacher: "—", type: "free" }, wed: { name: "自主學習", room: "—", teacher: "—", type: "free" }, thu: { name: "資訊科技概論", room: "電腦教室A", teacher: "許教授", type: "gen" }, fri: { name: "自主學習", room: "—", teacher: "—", type: "free" } }
+        ];
+
+        const eventsData = [
+            { date: "2026-10-14", title: "基本護理學 – 無菌技術技術抽測", category: "技術考核", status: "urgent" },
+            { date: "2026-10-24", title: "解剖學實驗 – 第一次骨骼跑考", category: "跑考", status: "urgent" },
+            { date: "2026-11-03", title: "大一上學期 期中考試週", category: "學校日程", status: "normal" },
+            { date: "2026-11-20", title: "護理系迎新晚會 & 傳光點燈預演", category: "班級活動", status: "normal" },
+            { date: "2026-12-15", title: "加護病房 (ICU) 與臨床參訪活動", category: "臨床參訪", status: "normal" },
+            { date: "2027-01-08", title: "期末解剖與生理學跑考總決算", category: "期末跑考", status: "urgent" }
+        ];
+
+        const membersData = [
+            { no: "01", name: "陳怡君", role: "班長", quote: "用溫暖的手，撫平病痛。", tag: "幹部", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" },
+            { no: "02", name: "張家豪", role: "副班長", quote: "護理是關懷與精準的結合。", tag: "幹部", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" },
+            { no: "03", name: "林欣妤", role: "學藝股長", quote: "讀好解剖學，考過每一次跑考！", tag: "幹部", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200" },
+            { no: "04", name: "黃柏翰", role: "康樂股長", quote: "運動與健康，是護理人的基石。", tag: "幹部", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200" },
+            { no: "05", name: "李雅婷", role: "衛保股長", quote: "洗手七步驟，健康常相伴。", tag: "幹部", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200" },
+            { no: "06", name: "王品潔", role: "班級成員", quote: "莫忘初衷，成為白衣天使。", tag: "同學", avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=200" },
+            { no: "07", name: "劉宇軒", role: "班級成員", quote: "希望未來能在急診盡一份力。", tag: "同學", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=200" },
+            { no: "08", name: "郭子晴", role: "班級成員", quote: "認真學習生理學與藥理學！", tag: "同學", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200" }
+        ];
+
+        let defaultTodos = [
+            { id: 1, text: "預習解剖學骨骼標本位置", completed: true },
+            { id: 2, text: "練習基本護理學洗手與無菌技術", completed: false },
+            { id: 3, text: "確認護理實習服訂購尺寸", completed: false }
+        ];
+
+        // TAB SWITCHING LOGIC
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Remove active states from navbar
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-nursing-600', 'bg-nursing-50');
+                btn.classList.add('text-slate-600');
+            });
+
+            // Show selected tab content
+            const targetTab = document.getElementById(`tab-${tabId}`);
+            if (targetTab) targetTab.classList.remove('hidden');
+
+            // Set navbar active style
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('text-nursing-600', 'bg-nursing-50');
+                activeNav.classList.remove('text-slate-600');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // TOOLBOX SUB-TABS LOGIC
+        function setToolboxActive(toolId) {
+            document.querySelectorAll('.tool-panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.tool-subtab').forEach(b => {
+                b.classList.remove('bg-nursing-600', 'text-white', 'shadow-sm');
+                b.classList.add('bg-white', 'text-slate-600');
+            });
+
+            const panel = document.getElementById(`tool-panel-${toolId}`);
+            const btn = document.getElementById(`tool-tab-${toolId}`);
+            if (panel) panel.classList.remove('hidden');
+            if (btn) {
+                btn.classList.add('bg-nursing-600', 'text-white', 'shadow-sm');
+                btn.classList.remove('bg-white', 'text-slate-600');
+            }
+        }
+
+        // TOOL 1: BMI & BSA
+        function calculateBMI() {
+            const h = parseFloat(document.getElementById('bmi-height').value);
+            const w = parseFloat(document.getElementById('bmi-weight').value);
+
+            if (!h || !w || h <= 0 || w <= 0) {
+                alert('請輸入有效的身高與體重數字！');
+                return;
+            }
+
+            const bmi = (w / ((h / 100) * (h / 100))).toFixed(1);
+            const bsa = Math.sqrt((h * w) / 3600).toFixed(2);
+
+            document.getElementById('res-bmi').innerText = bmi;
+            document.getElementById('res-bsa').innerHTML = `${bsa} <span class="text-xs font-normal">m²</span>`;
+
+            const statusEl = document.getElementById('res-bmi-status');
+            const adviceEl = document.getElementById('res-bmi-advice');
+
+            if (bmi < 18.5) {
+                statusEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800";
+                statusEl.innerText = "體重過輕 (Underweight)";
+                adviceEl.innerText = "建議均衡飲食，適度補充蛋白質與熱量，並保持规律運動。";
+            } else if (bmi >= 18.5 && bmi < 24) {
+                statusEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800";
+                statusEl.innerText = "健康體位 (Normal)";
+                adviceEl.innerText = "恭喜！體重維持於良好範圍，請繼續保持健康的作息與運動習慣。";
+            } else if (bmi >= 24 && bmi < 27) {
+                statusEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800";
+                statusEl.innerText = "體重過重 (Overweight)";
+                adviceEl.innerText = "建議調整飲食結構，減少高油脂與精製糖攝取，增加有氧運動。";
+            } else {
+                statusEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800";
+                statusEl.innerText = "肥胖 (Obesity)";
+                adviceEl.innerText = "建議至營養科或健康管理門診進行諮詢，制定個人化飲食與運動計畫。";
+            }
+        }
+
+        // TOOL 2: IV DRIP RATE
+        function calculateIV() {
+            const vol = parseFloat(document.getElementById('iv-volume').value);
+            const hrs = parseFloat(document.getElementById('iv-hours').value);
+            const factor = parseFloat(document.getElementById('iv-factor').value);
+
+            if (!vol || !hrs || vol <= 0 || hrs <= 0) {
+                alert('請輸入正確的輸液量與時間！');
+                return;
+            }
+
+            const totalMins = hrs * 60;
+            const gttMin = Math.round((vol * factor) / totalMins);
+            const secPerDrop = gttMin > 0 ? (60 / gttMin).toFixed(1) : 0;
+            const mlHr = Math.round(vol / hrs);
+
+            document.getElementById('res-iv-gtt').innerHTML = `${gttMin} <span class="text-sm font-bold">gtt/min</span>`;
+            document.getElementById('res-iv-sec').innerText = `（約每 ${secPerDrop} 秒 1 滴）`;
+            document.getElementById('res-iv-mlhr').innerHTML = `${mlHr} <span class="text-xs font-normal">mL/hr</span>`;
+        }
+
+        // TOOL 3: EDD CALCULATOR
+        function calculateEDD() {
+            const lmpVal = document.getElementById('edd-lmp').value;
+            if (!lmpVal) {
+                alert('請選擇最後一次月經日期 (LMP)！');
+                return;
+            }
+
+            const lmpDate = new Date(lmpVal);
+            // Naegele's rule: + 280 days
+            const eddDate = new Date(lmpDate.getTime() + 280 * 24 * 60 * 60 * 1000);
+
+            const year = eddDate.getFullYear();
+            const month = String(eddDate.getMonth() + 1).padStart(2, '0');
+            const day = String(eddDate.getDate()).padStart(2, '0');
+
+            document.getElementById('res-edd-date').innerText = `${year} 年 ${month} 月 ${day} 日`;
+        }
+
+        // TOOL 4: GCS CALCULATOR
+        function calculateGCS() {
+            const e = document.getElementById('gcs-e').value;
+            const vVal = document.getElementById('gcs-v').value;
+            const m = document.getElementById('gcs-m').value;
+
+            let vScore = parseInt(vVal);
+            let isIntubated = false;
+
+            if (vVal === '1-intubated') {
+                vScore = 1;
+                isIntubated = true;
+            }
+
+            const eScore = parseInt(e);
+            const mScore = parseInt(m);
+            const total = eScore + (isIntubated ? 0 : vScore) + mScore;
+
+            const scoreCode = `E${eScore}V${isIntubated ? 't' : vScore}M${mScore}`;
+            document.getElementById('res-gcs-score').innerText = scoreCode;
+            document.getElementById('res-gcs-num').innerText = isIntubated ? `${eScore + mScore}+Vt` : total;
+
+            const levelEl = document.getElementById('res-gcs-level');
+
+            if (isIntubated) {
+                levelEl.innerText = "已行氣管內插管 (Intubated)";
+                levelEl.className = "text-base font-extrabold text-amber-600 mt-0.5";
+            } else if (total >= 13) {
+                levelEl.innerText = "意識清醒 / 輕度損傷 (Mild)";
+                levelEl.className = "text-base font-extrabold text-emerald-600 mt-0.5";
+            } else if (total >= 9) {
+                levelEl.innerText = "中度昏迷 / 中度損傷 (Moderate)";
+                levelEl.className = "text-base font-extrabold text-amber-600 mt-0.5";
+            } else {
+                levelEl.innerText = "重度昏迷 / 嚴重損傷 (Severe)";
+                levelEl.className = "text-base font-extrabold text-rose-600 mt-0.5";
+            }
+        }
+
+        // RENDERING TIMETABLE
+        function renderTimetable(filterText = '') {
+            const tbody = document.getElementById('timetable-body');
+            tbody.innerHTML = '';
+
+            // Get current day of week (0: Sun, 1: Mon, ..., 5: Fri, 6: Sat)
+            const today = new Date().getDay();
+            const daysMap = { 1: 'th-mon', 2: 'th-tue', 3: 'th-wed', 4: 'th-thu', 5: 'th-fri' };
+            
+            // Highlight today column header
+            Object.values(daysMap).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('bg-nursing-100', 'text-nursing-900');
+            });
+            if (daysMap[today]) {
+                const activeTh = document.getElementById(daysMap[today]);
+                if (activeTh) activeTh.classList.add('bg-nursing-100', 'text-nursing-900');
+            }
+
+            timetableData.forEach(row => {
+                const tr = document.createElement('tr');
+
+                if (row.isRest) {
+                    tr.className = "bg-slate-50 text-center text-xs font-bold text-slate-400";
+                    tr.innerHTML = `
+                        <td class="p-3 bg-slate-100">${row.period}<br>${row.time}</td>
+                        <td colspan="5" class="p-3 tracking-widest uppercase">── 午 休 時 間 ──</td>
+                    `;
+                } else {
+                    tr.className = "hover:bg-slate-50/80 transition-colors";
+                    let rowHtml = `<td class="p-3 font-bold text-center text-slate-600 bg-slate-50 text-xs">${row.period}<br><span class="text-[10px] font-normal text-slate-400">${row.time}</span></td>`;
+
+                    ['mon', 'tue', 'wed', 'thu', 'fri'].forEach((dayKey, idx) => {
+                        const course = row[dayKey];
+                        const isTodayCol = (idx + 1) === today;
+
+                        if (course && course.type !== 'free') {
+                            // Check filter
+                            const match = filterText === '' || 
+                                course.name.includes(filterText) || 
+                                course.teacher.includes(filterText) || 
+                                course.room.includes(filterText);
+
+                            let badgeBg = "bg-nursing-50 text-nursing-800 border-nursing-200";
+                            if (course.type === 'lab') badgeBg = "bg-teal-50 text-teal-800 border-teal-200";
+                            if (course.type === 'gen') badgeBg = "bg-amber-50 text-amber-800 border-amber-200";
+                            if (course.type === 'class') badgeBg = "bg-rose-50 text-rose-800 border-rose-200";
+
+                            rowHtml += `
+                                <td class="p-2 border border-slate-100 text-center ${isTodayCol ? 'bg-nursing-50/30' : ''} ${!match ? 'opacity-20' : ''}">
+                                    <div class="p-2 rounded-xl border ${badgeBg} shadow-2xs space-y-1">
+                                        <div class="font-bold text-xs">${course.name}</div>
+                                        <div class="text-[11px] opacity-80">${course.room} • ${course.teacher}</div>
+                                    </div>
+                                </td>
+                            `;
+                        } else {
+                            rowHtml += `<td class="p-2 border border-slate-100 text-center text-slate-300 text-xs ${isTodayCol ? 'bg-nursing-50/20' : ''}">—</td>`;
+                        }
+                    });
+
+                    tr.innerHTML = rowHtml;
+                }
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterTimetable() {
+            const val = document.getElementById('timetable-search').value.trim();
+            renderTimetable(val);
+        }
+
+        // TODAY SCHEDULE ON HOME PAGE
+        function renderHomeTodaySchedule() {
+            const container = document.getElementById('home-today-courses-list');
+            const weekdayEl = document.getElementById('home-today-weekday');
+            const dayNames = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const today = new Date().getDay();
+            
+            weekdayEl.innerText = dayNames[today];
+
+            const dayKeys = { 1: 'mon', 2: 'tue', 3: 'wed', 4: 'thu', 5: 'fri' };
+            const currentKey = dayKeys[today] || 'wed'; // Default to Wednesday if weekend
+
+            const coursesToday = timetableData
+                .filter(r => !r.isRest && r[currentKey] && r[currentKey].type !== 'free')
+                .map(r => ({ time: r.time, ...r[currentKey] }));
+
+            if (coursesToday.length === 0) {
+                container.innerHTML = `<div class="text-xs text-slate-400 text-center py-4">今天沒有排定課程，好好休息！</div>`;
+                return;
+            }
+
+            container.innerHTML = coursesToday.map(c => `
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <div class="font-bold text-xs text-slate-800">${c.name}</div>
+                        <div class="text-[11px] text-slate-500">${c.room} • ${c.teacher}</div>
+                    </div>
+                    <span class="text-[10px] font-semibold px-2 py-1 rounded-md bg-white border border-slate-200 text-slate-600">${c.time.split(' ')[0]}</span>
+                </div>
+            `).join('');
+        }
+
+        // RENDERING EVENTS & TODOS
+        function renderEvents() {
+            const container = document.getElementById('calendar-events-container');
+            container.innerHTML = eventsData.map(e => `
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl ${e.status === 'urgent' ? 'bg-rose-50 text-rose-600' : 'bg-nursing-50 text-nursing-600'} flex flex-col items-center justify-center font-bold text-xs">
+                            <span>${e.date.split('-')[1]}月</span>
+                            <span class="text-sm">${e.date.split('-')[2]}</span>
+                        </div>
+                        <div>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${e.status === 'urgent' ? 'bg-rose-100 text-rose-700' : 'bg-nursing-100 text-nursing-700'}">${e.category}</span>
+                            <h4 class="font-bold text-slate-800 text-sm mt-1">${e.title}</h4>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                </div>
+            `).join('');
+        }
+
+        function renderTodos() {
+            const list = document.getElementById('todo-list');
+            list.innerHTML = defaultTodos.map(todo => `
+                <li class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+                    <div class="flex items-center gap-2.5">
+                        <input type="checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${todo.id})" class="rounded text-nursing-600 focus:ring-nursing-500 w-4 h-4 cursor-pointer">
+                        <span class="${todo.completed ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}">${todo.text}</span>
+                    </div>
+                    <button onclick="deleteTodo(${todo.id})" class="text-slate-400 hover:text-rose-500 transition-colors p-1">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </li>
+            `).join('');
+        }
+
+        function addTodo() {
+            const input = document.getElementById('todo-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            defaultTodos.push({ id: Date.now(), text, completed: false });
+            input.value = '';
+            renderTodos();
+        }
+
+        function toggleTodo(id) {
+            defaultTodos = defaultTodos.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+            renderTodos();
+        }
+
+        function deleteTodo(id) {
+            defaultTodos = defaultTodos.filter(t => t.id !== id);
+            renderTodos();
+        }
+
+        // RENDERING MEMBERS
+        function renderMembers(filter = '') {
+            const grid = document.getElementById('members-grid');
+            const filtered = membersData.filter(m => 
+                m.name.includes(filter) || m.role.includes(filter) || m.no.includes(filter)
+            );
+
+            grid.innerHTML = filtered.map(m => `
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col items-center text-center space-y-3">
+                    <img src="${m.avatar}" alt="${m.name}" class="w-16 h-16 rounded-full object-cover border-2 border-nursing-200">
+                    <div>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${m.tag === '幹部' ? 'bg-nursing-100 text-nursing-800' : 'bg-slate-100 text-slate-600'}">${m.role}</span>
+                        <h4 class="font-bold text-slate-800 text-sm mt-1">座號 ${m.no} - ${m.name}</h4>
+                    </div>
+                    <p class="text-xs text-slate-500 italic leading-snug">"${m.quote}"</p>
+                </div>
+            `).join('');
+        }
+
+        function filterMembers() {
+            const val = document.getElementById('member-search').value.trim();
+            renderMembers(val);
+        }
+
+        // INITIAL ON LOAD
+        window.onload = function() {
+            renderTimetable();
+            renderHomeTodaySchedule();
+            renderEvents();
+            renderTodos();
+            renderMembers();
+            calculateGCS();
+        };
+    </script>
+</body>
+</html>
